@@ -48,9 +48,7 @@ import sys
 
 __author__ = "???"
 
-
-def create_mimic_dict(filename):
-    """Returns mimic dict mapping each word to list of words which follow it.
+"""Returns mimic dict mapping each word to list of words which follow it.
     For example:
         Input: "I am a software developer, and I don't care who knows"
         Output:
@@ -67,18 +65,40 @@ def create_mimic_dict(filename):
                 "who" : ["knows"]
             }
     """
-    # +++your code here+++
 
 
-def print_mimic(mimic_dict, start_word):
+def create_mimic_dict(filename):
+    mimic_dict = {}
+    f = open(filename, 'r')
+    file_text = f.read()
+    f.close()
+    words = file_text.split()
+    prev_word = ''
+    for word in words:
+        if prev_word not in mimic_dict:
+            mimic_dict[prev_word] = [word]
+        else:
+            mimic_dict[prev_word].append(word)
+    # Could write as: mimic_dict[prev] = mimic_dict.get(prev, []) + [word]
+    # It's one line, but not totally satisfying.
+            prev_word = word
+    return mimic_dict
+
     """Given a previously compiled mimic_dict and start_word, prints 200 random words:
         - Print the start_word
         - Lookup the start_word in your mimic_dict and get it's next-list
         - Randomly select a new word from the next-list
         - Repeat this process 200 times
     """
-    # +++your code here+++
-    pass
+
+
+def print_mimic(mimic_dict, start_word):
+    for first_words in range(200):
+        print start_word,
+        next_word_list = mimic_dict.get(start_word)
+        if not next_word_list:
+            next_word_list = mimic_dict['']
+        start_word = random.choice(next_word_list)
 
 
 # Provided main(), calls mimic_dict() and mimic()
